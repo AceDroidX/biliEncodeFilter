@@ -12,7 +12,7 @@
     <style>
         .mdl-card {
             /*width: fit-content;*/
-            width:500px;
+            width: 500px;
             margin-left: auto;
             margin-right: auto;
         }
@@ -43,7 +43,10 @@
         <div class="mdl-layout__drawer">
             <span class="mdl-layout-title">哔哩哔哩2018新直传压制方案筛选工具web版V1.0</span>
             <nav class="mdl-navigation">
-                <!--a class="mdl-navigation__link" href="./about.html">关于作者</a-->
+                <a class="mdl-navigation__link" href="http://42.96.168.211:8088/topics/154">免二压手册 小丸之家</a>
+                <a class="mdl-navigation__link" href="https://www.bilibili.com/read/cv311967">免二压手册 B站专栏</a>
+                <a class="mdl-navigation__link" href="https://space.bilibili.com/3512816/">磁爆线圈X B站空间</a>
+                <a class="mdl-navigation__link" href="https://wangxuxin.github.io">AceDroidX Github</a>
             </nav>
         </div>
         <main class="mdl-layout__content">
@@ -72,16 +75,18 @@
                         <br>########################################
                         <br>禁止一切形式的修改与再编码!
                         <br>作者保留法律追诉权!
+                        <br>
+                        <br>web版工具正在测试中，如有bug欢迎反馈！
                     </div>
                 </div>
 
-                <div class="mdl-card mdl-shadow--2dp" style="margin-top: 50px;">
+                <div class="mdl-card mdl-shadow--2dp" id="setting_card" style="margin-top: 50px;">
                     <div class="mdl-card__title" id="p1">
-                        
+
                     </div>
                     <div class="mdl-card__supporting-text">
                         <p id="p2">
-                            
+
                         </p>
                         <form action="#">
                             <div class="mdl-textfield mdl-js-textfield">
@@ -112,7 +117,7 @@
 
                 <div class="mdl-card mdl-shadow--2dp" id="result_card" style="display: none;margin-top: 50px;margin-bottom: 50px;">
                     <div class="mdl-card__title">
-                        推荐的压制方案
+                        压制方案筛选完成
                     </div>
                     <div class="mdl-card__supporting-text">
                         <p id="result_text">
@@ -135,216 +140,251 @@
         var b2 = document.getElementById("b2")
         var b3 = document.getElementById("b3")
 
-        var state="first"//运行状态
+        var state = "first" //运行状态
         var short
         var length
-        var horizontal//横向
-        var boolean=null
+        var horizontal //横向
+        var boolean = null
         var shortx
         var lengthx
         var division
         var fps
         var dalao
         var vol
+        var resize
+        var lengthxx
+        var shortxx
 
         var result
 
-        function start(){
+        function start() {
             console.log(state)
             console.log(boolean)
-            switch(state){
-                case "first":
+            switch (state) {
+            case "first":
                 first()
                 break;
 
-                case "oneB":
+            case "oneB":
                 oneB()
                 break
 
-                case "oneCheck1":
+            case "oneCheck1":
                 oneCheck1()
                 break
 
-                case "oneCheck2":
+            case "oneCheck2":
                 oneCheck2()
                 break
 
-                case "oneCheck3":
+            case "oneCheck3":
                 oneCheck3()
                 break
 
-                case "filt720p":
+            case "checkRes":
+                checkRes()
+                break
+
+            case "filt720p":
                 filt720p()
                 break
 
-                case "filt720p2":
+            case "filt720p2":
                 filt720p2()
                 break
 
-                case "filt720p3":
+            case "filt720p3":
                 filt720p3()
+                break
+
+            case "filtOther1":
+                filtOther1()
+                break
+
+            case "filtOther2":
+                filtOther1()
+                break
+
+            case "filtOther3":
+                filtOther1()
+                break
+
+            case "filtOther4":
+                filtOther1()
+                break
+
+            case "filtOther5":
+                filtOther1()
                 break
             }
         }
 
-        function first(){
-            t1.value=""
-            b1.style.display='none'
-            t1.style.display='block'
+        function first() {
+            t1.value = ""
+            b1.style.display = 'none'
+            t1.style.display = 'block'
             p1.innerHTML = "压制方案筛选-第1步-A-输入分辨率中较小的数"
             p2.innerHTML = "请输入您从Mediainfo中读到的视频分辨率中较小的数值"
-            b2.style.display='block'
-            state="oneB"
+            b2.style.display = 'block'
+            state = "oneB"
         }
-        function oneB(){
-            short=parseInt(document.getElementById("t1").value);
-            t1.value=""
+
+        function oneB() {
+            short = parseInt(document.getElementById("t1").value);
+            t1.value = ""
             p1.innerHTML = "压制方案筛选-第1步-B-输入分辨率中较大的数"
             p2.innerHTML = "请输入您从Mediainfo中读到的视频分辨率中较大的数值"
-            state="oneCheck1"
+            state = "oneCheck1"
         }
-        function oneCheck1(){
-            length=parseInt(document.getElementById("t1").value);
-            t1.value=""
-            if(short>length){
+
+        function oneCheck1() {
+            length = parseInt(document.getElementById("t1").value);
+            t1.value = ""
+            if (short > length) {
                 alert("您把大数和小数输反了! 请重新确认您的输入!")
                 first()
-            }
-            else if((short/length)<0.375){
+            } else if ((short / length) < 0.375) {
                 alert("该分辨率比例超限无法上传! 推荐使用≤16.9的比例! 请再次确认您是否输入正确")
                 first()
-            }else{
+            } else {
                 oneCheck2()
             }
         }
-        function oneCheck2(){
-            t1.style.display='none'
-            b2.style.display='none'
+
+        function oneCheck2() {
+            t1.style.display = 'none'
+            b2.style.display = 'none'
             p1.innerHTML = "分辨率选择"
             p2.innerHTML = "您输入的较大的数值，是Mediainfo读到的视频分辨率中左半部分的数字吗?例如1920x1080中的1920?"
-            b3.style.display='block'
-            state="oneCheck3"
+            b3.style.display = 'block'
+            state = "oneCheck3"
         }
-        function oneCheck3(){
-            horizontal=boolean
-            boolean=0
-            t1.value=""
-            var tmp=""
-            if(horizontal){
-                tmp+=length
-                tmp+="x"
-                tmp+=short
-            }else{
-                tmp+=short
-                tmp+="x"
-                tmp+=length
+
+        function oneCheck3() {
+            horizontal = boolean
+            boolean = 0
+            t1.value = ""
+            var tmp = ""
+            if (horizontal) {
+                tmp += length
+                tmp += "x"
+                tmp += short
+            } else {
+                tmp += short
+                tmp += "x"
+                tmp += length
             }
             p1.innerHTML = "分辨率选择"
-            p2.innerHTML = "您输入的分辨率("+tmp+")已确认"//，且符合MPEG规范与B站上传范围"
-            b2.style.display='block'
-            b3.style.display='none'
-            checkRes()
+            p2.innerHTML = "您输入的分辨率(" + tmp + ")已确认" //，且符合MPEG规范与B站上传范围"
+            b2.style.display = 'block'
+            b3.style.display = 'none'
+            state="checkRes"
         }
-        function checkRes(){
+
+        function checkRes() {
             var aaa
             var bbb
             var ccc
             var ddd
             var eee
-            if(short<720){
+            if (short < 720) {
                 alert("短边分辨率小于720，将为您自动放大分辨率")
-                shortx=720
-                aaa=Math.round(720*length/short)
-                if(aaa%4==0){
-                    lengthx=aaa
-                }else{
-                    while(aaa%4==0){
-                        aaa+=1
+                shortx = 720
+                aaa = Math.round(720 * length / short)
+                if (aaa % 4 == 0) {
+                    lengthx = aaa
+                } else {
+                    while (aaa % 4 == 0) {
+                        aaa += 1
                     }
-                    lengthx=aaa
+                    lengthx = aaa
                 }
-            }else if(short>2160||length>3840){
+            } else if (short > 2160 || length > 3840) {
                 alert("分辨率超出4K标准，将为您自动推荐缩减分辨率")
-                bbb=2160
-                ccc=Math.round(bbb*length/short)
-                if(ccc>3840){
-                    ddd=3840
-                    eee=Math.round(short*ddd/length)
-                    if(eee%4==0){
-                        lengthx=ddd
-                        shortx=eee
-                    }else{
-                        while(eee%4==0){
-                            eee-=1
+                bbb = 2160
+                ccc = Math.round(bbb * length / short)
+                if (ccc > 3840) {
+                    ddd = 3840
+                    eee = Math.round(short * ddd / length)
+                    if (eee % 4 == 0) {
+                        lengthx = ddd
+                        shortx = eee
+                    } else {
+                        while (eee % 4 == 0) {
+                            eee -= 1
                         }
-                        lengthx=ddd
-                        shortx=eee
+                        lengthx = ddd
+                        shortx = eee
                     }
-                }else{//若计算后长边小于等于3840
-                    if(ccc%4==0){
-                        lengthx=ccc
-                        shortx=bbb
-                    }else{
-                        while(ccc%4==0){
-                            ccc-=1
+                } else { //若计算后长边小于等于3840
+                    if (ccc % 4 == 0) {
+                        lengthx = ccc
+                        shortx = bbb
+                    } else {
+                        while (ccc % 4 == 0) {
+                            ccc -= 1
                         }
-                        lengthx=ccc
-                        shortx=bbb
+                        lengthx = ccc
+                        shortx = bbb
                     }
                 }
-            }else{//若既不低于720p又不高于4k
-                if(short%4>0){
-                    division=1
-                    shortx=short+2
-                }else{
-                    shortx=short
+            } else { //若既不低于720p又不高于4k
+                if (short % 4 > 0) {
+                    division = 1
+                    shortx = short + 2
+                } else {
+                    shortx = short
                 }
-                if(length%4>0){
-                    division=1
-                    lengthx=length+2
-                }else{
-                    lengthx=length
-                }//720-4k不能被4整除转化
-            }//低于720和高于4k裁剪完成
-            if(short>=480&&shortx==720&&lengthx>1280){
-                shortx=shortx+4
-                division=1
+                if (length % 4 > 0) {
+                    division = 1
+                    lengthx = length + 2
+                } else {
+                    lengthx = length
+                } //720-4k不能被4整除转化
+            } //低于720和高于4k裁剪完成
+            if (short >= 480 && shortx == 720 && lengthx > 1280) {
+                shortx = shortx + 4
+                division = 1
             }
 
-            if(shortx==720){
+            if (shortx == 720) {
+                console.log("720p")
                 getfps()
-            }else{
+            } else {
+                console.log("其他")
                 filtOther()
             }
         }
-        function getfps(){
-            t1.value=""
-            b1.style.display='none'
-            t1.style.display='block'
+
+        function getfps() {
+            t1.value = ""
+            b1.style.display = 'none'
+            t1.style.display = 'block'
             p1.innerHTML = "压制方案筛选-第1.5步-输入帧率"
             p2.innerHTML = "请输入您从Mediainfo中读到的视频帧率："
-            b2.style.display='block'
-            b3.style.display='none'
-            state="filt720p"
+            b2.style.display = 'block'
+            b3.style.display = 'none'
+            state = "filt720p"
         }
-        function filt720p(){
-            fps=parseInt(document.getElementById("t1").value);
-            if(fps<5||fps>144){
-                alert(您输入了非法的帧率！请重新确认您的输入！)
+
+        function filt720p() {
+            fps = parseInt(document.getElementById("t1").value);
+            if (fps < 5 || fps > 144) {
+                alert("您输入了非法的帧率！请重新确认您的输入！")
                 getfps()
             }
-            if(fps<48){
-                if(short<720){
-                    if(horizontal){
-                        result="推荐您的压制方案：<br>\
+            if (fps < 48) {
+                if (short < 720) {
+                    if (horizontal) {
+                        result = "推荐您的压制方案：<br>\
                                 宽度：" + lengthx + "<br>\
                                 高度：" + shortx + "<br>\
                                 码率：手册中的码率A<br>\
                                 音频：普通用户音质<br>\
                                 参数：普通分辨率默认参数<br>\
                                 "
-                    }else{
-                        result="推荐您的压制方案：<br>\
+                    } else {
+                        result = "推荐您的压制方案：<br>\
                                 宽度：" + shortx + "<br>\
                                 高度：" + lengthx + "<br>\
                                 码率：手册中的码率A<br>\
@@ -352,18 +392,18 @@
                                 参数：普通分辨率默认参数<br>\
                                 "
                     }
-                }else{
-                    if(division==1){
-                        if(horizontal){
-                            result="推荐您的压制方案：<br>\
+                } else {
+                    if (division == 1) {
+                        if (horizontal) {
+                            result = "推荐您的压制方案：<br>\
                                 宽度：" + lengthx + "<br>\
                                 高度：" + shortx + "<br>\
                                 码率：手册中的码率A<br>\
                                 音频：普通用户音质<br>\
                                 参数：普通分辨率默认参数<br>\
                                 "
-                        }else{
-                            result="推荐您的压制方案：<br>\
+                        } else {
+                            result = "推荐您的压制方案：<br>\
                                 宽度：" + shortx + "<br>\
                                 高度：" + lengthx + "<br>\
                                 码率：手册中的码率A<br>\
@@ -371,8 +411,8 @@
                                 参数：普通分辨率默认参数<br>\
                                 "
                         }
-                    }else{
-                        result="推荐您的压制方案：<br>\
+                    } else {
+                        result = "推荐您的压制方案：<br>\
                                 请勾选“保持原分辨率”选框<br>\
                                 码率：手册中的码率A<br>\
                                 音频：普通用户音质<br>\
@@ -381,34 +421,35 @@
                     }
                 }
                 showResult()
-            }else{
-                boolean=null
-                t1.style.display='block'
+            } else {
+                boolean = null
+                t1.style.display = 'none'
                 p1.innerHTML = "压制方案筛选-第2步-大会员画质需求选择"
                 p2.innerHTML = "请问您是否需要大会员专属画质？<br>\
                                 如果需要，您的大会员粉丝可以得到更好的视频质量，但普通观众只能看到二压后的普通画质。<br>\
                                 如不需要，则所有观众都能看到同样的画面（包括高帧率），但视频质量会稍有降低。<br>\
                                 ##################################<br>\
                                 特别注意！特别注意！特别注意！特别注意！如果您的视频题材是游戏录像、MMD、3DCG这三者其中之一，请直接选择“是”！只有大会员专属画质才能满足这三种题材的需求！"
-                b2.style.display='block'
-                b3.style.display='none'
-                state="filt720p2"
+                b2.style.display = 'none'
+                b3.style.display = 'block'
+                state = "filt720p2"
             }
         }
-        function filt720p2(){
-            dalao=boolean
-            if(dalao){
-                if(short<720){
-                    if(horizontal){
-                        result="推荐您的压制方案：<br>\
+
+        function filt720p2() {
+            dalao = boolean
+            if (dalao) {
+                if (short < 720) {
+                    if (horizontal) {
+                        result = "推荐您的压制方案：<br>\
                                 宽度：" + lengthx + "<br>\
                                 高度：" + shortx + "<br>\
                                 码率：手册中的码率B<br>\
                                 音频：大会员专属音质<br>\
                                 参数：普通分辨率默认参数<br>\
                                 "
-                    }else{
-                        result="推荐您的压制方案：<br>\
+                    } else {
+                        result = "推荐您的压制方案：<br>\
                                 宽度：" + shortx + "<br>\
                                 高度：" + lengthx + "<br>\
                                 码率：手册中的码率B<br>\
@@ -416,18 +457,18 @@
                                 参数：普通分辨率默认参数<br>\
                                 "
                     }
-                }else{
-                    if(division==1){
-                        if(horizontal){
-                            result="推荐您的压制方案：<br>\
+                } else {
+                    if (division == 1) {
+                        if (horizontal) {
+                            result = "推荐您的压制方案：<br>\
                                 宽度：" + lengthx + "<br>\
                                 高度：" + shortx + "<br>\
                                 码率：手册中的码率B<br>\
                                 音频：大会员专属音质<br>\
                                 参数：普通分辨率默认参数<br>\
                                 "
-                        }else{
-                            result="推荐您的压制方案：<br>\
+                        } else {
+                            result = "推荐您的压制方案：<br>\
                                 宽度：" + shortx + "<br>\
                                 高度：" + lengthx + "<br>\
                                 码率：手册中的码率B<br>\
@@ -435,8 +476,8 @@
                                 参数：普通分辨率默认参数<br>\
                                 "
                         }
-                    }else{
-                        result="推荐您的压制方案：<br>\
+                    } else {
+                        result = "推荐您的压制方案：<br>\
                                 请勾选“保持原分辨率”选框<br>\
                                 码率：手册中的码率B<br>\
                                 音频：大会员专属音质<br>\
@@ -445,51 +486,33 @@
                     }
                 }
                 showResult()
-            }else{
-                boolean=null
-                t1.style.display='block'
+            } else {
+                boolean = null
+                t1.style.display = 'none'
                 p1.innerHTML = "压制方案筛选-第3步-高音质需求选择"
                 p2.innerHTML = "请问您是否需要大会员专属音质？<br>\
                                 如果需要，您的大会员粉丝可以听到320kbps的高音质，但普通观众只能听到二压后的普通音质。<br>\
                                 不管您需不需要，这个选项都不会对画质造成任何影响，这点请您放心。"
-                b2.style.display='block'
-                b3.style.display='none'
-                state="filt720p3"
+                b2.style.display = 'none'
+                b3.style.display = 'block'
+                state = "filt720p3"
             }
         }
-        function filt720p3(){
-            vol=boolean
-            if(vol){
-                if(short<720){
-                    if(horizontal){
-                        result="推荐您的压制方案：<br>\
+
+        function filt720p3() {
+                vol = boolean
+                if (vol) {
+                    if (short < 720) {
+                        if (horizontal) {
+                            result = "推荐您的压制方案：<br>\
                                 宽度：" + lengthx + "<br>\
                                 高度：" + shortx + "<br>\
                                 码率：手册中的码率A<br>\
                                 音频：大会员专属音质<br>\
                                 参数：普通分辨率默认参数<br>\
                                 "
-                    }else{
-                        result="推荐您的压制方案：<br>\
-                                宽度：" + shortx + "<br>\
-                                高度：" + lengthx + "<br>\
-                                码率：手册中的码率A<br>\
-                                音频：大会员专属音质<br>\
-                                参数：普通分辨率默认参数<br>\
-                                "
-                    }
-                }else{
-                    if(division==1){
-                        if(horizontal){
-                            result="推荐您的压制方案：<br>\
-                                宽度：" + lengthx + "<br>\
-                                高度：" + shortx + "<br>\
-                                码率：手册中的码率A<br>\
-                                音频：大会员专属音质<br>\
-                                参数：普通分辨率默认参数<br>\
-                                "
-                        }else{
-                            result="推荐您的压制方案：<br>\
+                        } else {
+                            result = "推荐您的压制方案：<br>\
                                 宽度：" + shortx + "<br>\
                                 高度：" + lengthx + "<br>\
                                 码率：手册中的码率A<br>\
@@ -497,46 +520,46 @@
                                 参数：普通分辨率默认参数<br>\
                                 "
                         }
-                    }else{
-                        result="推荐您的压制方案：<br>\
+                    } else {
+                        if (division == 1) {
+                            if (horizontal) {
+                                result = "推荐您的压制方案：<br>\
+                                宽度：" + lengthx + "<br>\
+                                高度：" + shortx + "<br>\
+                                码率：手册中的码率A<br>\
+                                音频：大会员专属音质<br>\
+                                参数：普通分辨率默认参数<br>\
+                                "
+                            } else {
+                                result = "推荐您的压制方案：<br>\
+                                宽度：" + shortx + "<br>\
+                                高度：" + lengthx + "<br>\
+                                码率：手册中的码率A<br>\
+                                音频：大会员专属音质<br>\
+                                参数：普通分辨率默认参数<br>\
+                                "
+                            }
+                        } else {
+                            result = "推荐您的压制方案：<br>\
                                 请勾选“保持原分辨率”选框<br>\
                                 码率：手册中的码率A<br>\
                                 音频：大会员专属音质<br>\
                                 参数：普通分辨率默认参数<br>\
                                 "
+                        }
                     }
-                }
-            }else{
-                if(short<720){
-                    if(horizontal){
-                        result="推荐您的压制方案：<br>\
+                } else {
+                    if (short < 720) {
+                        if (horizontal) {
+                            result = "推荐您的压制方案：<br>\
                                 宽度：" + lengthx + "<br>\
                                 高度：" + shortx + "<br>\
                                 码率：手册中的码率A<br>\
                                 音频：普通用户音质<br>\
                                 参数：普通分辨率默认参数<br>\
                                 "
-                    }else{
-                        result="推荐您的压制方案：<br>\
-                                宽度：" + shortx + "<br>\
-                                高度：" + lengthx + "<br>\
-                                码率：手册中的码率A<br>\
-                                音频：普通用户音质<br>\
-                                参数：普通分辨率默认参数<br>\
-                                "
-                    }
-                }else{
-                    if(division==1){
-                        if(horizontal){
-                            result="推荐您的压制方案：<br>\
-                                宽度：" + lengthx + "<br>\
-                                高度：" + shortx + "<br>\
-                                码率：手册中的码率A<br>\
-                                音频：普通用户音质<br>\
-                                参数：普通分辨率默认参数<br>\
-                                "
-                        }else{
-                            result="推荐您的压制方案：<br>\
+                        } else {
+                            result = "推荐您的压制方案：<br>\
                                 宽度：" + shortx + "<br>\
                                 高度：" + lengthx + "<br>\
                                 码率：手册中的码率A<br>\
@@ -544,29 +567,405 @@
                                 参数：普通分辨率默认参数<br>\
                                 "
                         }
-                    }else{
-                        result="推荐您的压制方案：<br>\
+                    } else {
+                        if (division == 1) {
+                            if (horizontal) {
+                                result = "推荐您的压制方案：<br>\
+                                宽度：" + lengthx + "<br>\
+                                高度：" + shortx + "<br>\
+                                码率：手册中的码率A<br>\
+                                音频：普通用户音质<br>\
+                                参数：普通分辨率默认参数<br>\
+                                "
+                            } else {
+                                result = "推荐您的压制方案：<br>\
+                                宽度：" + shortx + "<br>\
+                                高度：" + lengthx + "<br>\
+                                码率：手册中的码率A<br>\
+                                音频：普通用户音质<br>\
+                                参数：普通分辨率默认参数<br>\
+                                "
+                            }
+                        } else {
+                            result = "推荐您的压制方案：<br>\
                                 请勾选“保持原分辨率”选框<br>\
                                 码率：手册中的码率A<br>\
                                 音频：普通用户音质<br>\
                                 参数：普通分辨率默认参数<br>\
                                 "
+                        }
                     }
                 }
+                showResult()
+            } //720P方案甄选完成
+
+        function filtOther() { //开始进行大于720P的甄选
+            if (shortx > 720 && shortx <= 1080 && lengthx <= 1920) { //开始进行720P-1080P方案甄选
+                boolean = null
+                t1.style.display = 'none'
+                p1.innerHTML = "压制方案筛选-第2步-大会员画质需求选择"
+                p2.innerHTML = "请问您是否需要大会员专属画质？<br>\
+                                如果需要，您的大会员粉丝可以得到更好的视频质量，但普通观众只能看到二压后的普通画质。<br>\
+                                如不需要，则所有观众都能看到同样的画面（包括高帧率），但视频质量会稍有降低。<br>\
+                                ##################################<br>\
+                                特别注意！特别注意！特别注意！特别注意！如果您的视频题材是游戏录像、MMD、3DCG这三者其中之一，请直接选择“是”！只有大会员专属画质才能满足这三种题材的需求！"
+                b2.style.display = 'none'
+                b3.style.display = 'block'
+                state = "filtOther1"
+            } else { //开始进行高于1080P方案甄选
+                if (shortx > 1080 || lengthx > 1920) {
+                    boolean = null
+                    t1.style.display = 'none'
+                    p1.innerHTML = "压制方案筛选-第1.5步-超高分辨率缩放"
+                    p2.innerHTML = "检测到您的视频分辨率介于1080P到4K之间，请问您是否需要缩小至1080P？<br>\
+                                如果需要缩至1080P，您可以获得更好的动态画质体验，而且可以兼容绝大多数设备的播放。<br>\
+                                如不需要缩至1080P（不推荐），则可能造成部分设备播放卡顿，部分画面模糊，且只有大会员观众才能看到最高画质（4K）。"
+                    b2.style.display = 'none'
+                    b3.style.display = 'block'
+                    state = "filtOther3"
+                }
+            }
+        }
+
+        function filtOther1() { //720P-1080P方案甄选
+            dalao = boolean
+            if (dalao) {
+                if (division == 1) {
+                    if (horizontal) {
+                        result = "推荐您的压制方案：<br>\
+                                宽度：" + lengthx + "<br>\
+                                高度：" + shortx + "<br>\
+                                码率：手册中的码率C<br>\
+                                音频：大会员专属音质<br>\
+                                参数：普通分辨率默认参数<br>\
+                                "
+                    } else {
+                        result = "推荐您的压制方案：<br>\
+                                宽度：" + shortx + "<br>\
+                                高度：" + lengthx + "<br>\
+                                码率：手册中的码率C<br>\
+                                音频：大会员专属音质<br>\
+                                参数：普通分辨率默认参数<br>\
+                                "
+                    }
+                } else {
+                    result = "推荐您的压制方案：<br>\
+                                请勾选“保持原分辨率”选框<br>\
+                                码率：手册中的码率C<br>\
+                                音频：大会员专属音质<br>\
+                                参数：普通分辨率默认参数<br>\
+                                "
+                }
+                showResult()
+            } else {
+                boolean = null
+                t1.style.display = 'none'
+                p1.innerHTML = "压制方案筛选-第3步-高音质需求选择"
+                p2.innerHTML = "请问您是否需要大会员专属音质？<br>\
+                                如果需要，您的大会员粉丝可以听到320kbps的高音质，但普通观众只能听到二压后的普通音质。<br>\
+                                不管您需不需要，这个选项都不会对画质造成任何影响，这点请您放心。"
+                b2.style.display = 'none'
+                b3.style.display = 'block'
+                state = "filtOther2"
+            }
+        }
+
+        function filtOther2() { //高音质需求选择
+                vol = boolean
+                if (vol) {
+                    if (division == 1) {
+                        if (horizontal) {
+                            result = "推荐您的压制方案：<br>\
+                                宽度：" + lengthx + "<br>\
+                                高度：" + shortx + "<br>\
+                                码率：手册中的码率B<br>\
+                                音频：大会员专属音质<br>\
+                                参数：普通分辨率默认参数<br>\
+                                "
+                        } else {
+                            result = "推荐您的压制方案：<br>\
+                                宽度：" + shortx + "<br>\
+                                高度：" + lengthx + "<br>\
+                                码率：手册中的码率B<br>\
+                                音频：大会员专属音质<br>\
+                                参数：普通分辨率默认参数<br>\
+                                "
+                        }
+                    } else {
+                        result = "推荐您的压制方案：<br>\
+                                请勾选“保持原分辨率”选框<br>\
+                                码率：手册中的码率B<br>\
+                                音频：大会员专属音质<br>\
+                                参数：普通分辨率默认参数<br>\
+                                "
+                    }
+                } else {
+                    if (division == 1) {
+                        if (horizontal) {
+                            result = "推荐您的压制方案：<br>\
+                                宽度：" + lengthx + "<br>\
+                                高度：" + shortx + "<br>\
+                                码率：手册中的码率B<br>\
+                                音频：普通用户音质<br>\
+                                参数：普通分辨率默认参数<br>\
+                                "
+                        } else {
+                            result = "推荐您的压制方案：<br>\
+                                宽度：" + shortx + "<br>\
+                                高度：" + lengthx + "<br>\
+                                码率：手册中的码率B<br>\
+                                音频：普通用户音质<br>\
+                                参数：普通分辨率默认参数<br>\
+                                "
+                        }
+                    } else {
+                        result = "推荐您的压制方案：<br>\
+                                请勾选“保持原分辨率”选框<br>\
+                                码率：手册中的码率B<br>\
+                                音频：普通用户音质<br>\
+                                参数：普通分辨率默认参数<br>\
+                                "
+                    }
+                }
+                showResult()
+            } //720P-1080P方案甄选完成
+
+        function filtOther3() { //超高分辨率缩放
+            var fff
+            var ggg
+            var hhh
+            var iii
+            resize = boolean
+            if (resize) {
+                fff = 1080
+                ggg = Math.round(fff * length / short)
+                if (ggg > 1920) { //若计算后长边大于1920
+                    hhh = 1920
+                    iii = Math.round(short * hhh / length)
+                    lengthxx = hhh
+                    if (iii % 4 == 0) {
+                        if (iii == 720) {
+                            shortxx = iii + 4
+                        } else {
+                            shortxx = iii
+                        }
+                    } else {
+                        while (iii % 4 == 0) {
+                            iii -= 1
+                        }
+                        if (iii == 720) {
+                            shortxx = iii + 4
+                        } else {
+                            shortxx = iii
+                        }
+                    }
+                } else { //若计算后长边小于等于1920
+                    shortxx = fff
+                    if (ggg % 4 == 0) {
+                        lengthxx = ggg
+                    } else {
+                        while (ggg % 4 == 0) {
+                            ggg -= 1
+                        }
+                        lengthxx = ggg
+                    }
+                } //已修正至1080P
+                boolean = null
+                t1.style.display = 'none'
+                p1.innerHTML = "压制方案筛选-第2步-大会员画质需求选择"
+                p2.innerHTML = "请问您是否需要大会员专属画质？<br>\
+                                如果需要，您的大会员粉丝可以得到更好的视频质量，但普通观众只能看到二压后的普通画质。<br>\
+                                如不需要，则所有观众都能看到同样的画面（包括高帧率），但视频质量会稍有降低。<br>\
+                                ##################################<br>\
+                                特别注意！特别注意！特别注意！特别注意！如果您的视频题材是游戏录像、MMD、3DCG这三者其中之一，请直接选择“是”！只有大会员专属画质才能满足这三种题材的需求！"
+                b2.style.display = 'none'
+                b3.style.display = 'block'
+                state = "filtOther4"
+            } else { //接下来是不修正至1080P
+                if (bbb = 2160) { //判定是否进行过分辨率重定
+                    if (horizontal) {
+                        if (shortx * lengthx <= 3932160) {
+                            result = "推荐您的压制方案：<br>\
+                                宽度：" + lengthx + "<br>\
+                                高度：" + shortx + "<br>\
+                                码率：手册中的码率C<br>\
+                                音频：大会员专属音质<br>\
+                                参数：普通分辨率默认参数<br>\
+                                "
+                        } else {
+                            result = "推荐您的压制方案：<br>\
+                                宽度：" + lengthx + "<br>\
+                                高度：" + shortx + "<br>\
+                                码率：手册中的码率C<br>\
+                                音频：大会员专属音质<br>\
+                                参数：超高分辨率默认参数<br>\
+                                "
+                        }
+                    } else {
+                        if (shortx * lengthx <= 3932160) {
+                            result = "推荐您的压制方案：<br>\
+                                宽度：" + shortx + "<br>\
+                                高度：" + lengthx + "<br>\
+                                码率：手册中的码率C<br>\
+                                音频：大会员专属音质<br>\
+                                参数：普通分辨率默认参数<br>\
+                                "
+                        } else {
+                            result = "推荐您的压制方案：<br>\
+                                宽度：" + shortx + "<br>\
+                                高度：" + lengthx + "<br>\
+                                码率：手册中的码率C<br>\
+                                音频：大会员专属音质<br>\
+                                参数：超高分辨率默认参数<br>\
+                                "
+                        }
+                    }
+                } else {
+                    if (division == 1) {
+                        if (horizontal) {
+                            if (shortx * lengthx <= 3932160) {
+                                result = "推荐您的压制方案：<br>\
+                                宽度：" + lengthx + "<br>\
+                                高度：" + shortx + "<br>\
+                                码率：手册中的码率C<br>\
+                                音频：大会员专属音质<br>\
+                                参数：普通分辨率默认参数<br>\
+                                "
+                            } else {
+                                result = "推荐您的压制方案：<br>\
+                                宽度：" + lengthx + "<br>\
+                                高度：" + shortx + "<br>\
+                                码率：手册中的码率C<br>\
+                                音频：大会员专属音质<br>\
+                                参数：超高分辨率默认参数<br>\
+                                "
+                            }
+                        } else {
+                            if (shortx * lengthx <= 3932160) {
+                                result = "推荐您的压制方案：<br>\
+                                宽度：" + shortx + "<br>\
+                                高度：" + lengthx + "<br>\
+                                码率：手册中的码率C<br>\
+                                音频：大会员专属音质<br>\
+                                参数：普通分辨率默认参数<br>\
+                                "
+                            } else {
+                                result = "推荐您的压制方案：<br>\
+                                宽度：" + shortx + "<br>\
+                                高度：" + lengthx + "<br>\
+                                码率：手册中的码率C<br>\
+                                音频：大会员专属音质<br>\
+                                参数：超高分辨率默认参数<br>\
+                                "
+                            }
+                        }
+                    } else {
+                        if (shortx * lengthx <= 3932160) {
+                            result = "推荐您的压制方案：<br>\
+                                请勾选“保持原分辨率”选框<br>\
+                                码率：手册中的码率C<br>\
+                                音频：大会员专属音质<br>\
+                                参数：普通分辨率默认参数<br>\
+                                "
+                        } else {
+                            result = "推荐您的压制方案：<br>\
+                                请勾选“保持原分辨率”选框<br>\
+                                码率：手册中的码率C<br>\
+                                音频：大会员专属音质<br>\
+                                参数：超高分辨率默认参数<br>\
+                                "
+                        }
+                    }
+                }
+            }
+        }
+
+        function filtOther4() {
+            dalao = boolean
+            if (dalao) {
+                if (horizontal) {
+                    result = "推荐您的压制方案：<br>\
+                                宽度：" + lengthx + "<br>\
+                                高度：" + shortx + "<br>\
+                                码率：手册中的码率C<br>\
+                                音频：大会员专属音质<br>\
+                                参数：普通分辨率默认参数<br>\
+                                "
+                } else {
+                    result = "推荐您的压制方案：<br>\
+                                宽度：" + shortx + "<br>\
+                                高度：" + lengthx + "<br>\
+                                码率：手册中的码率C<br>\
+                                音频：大会员专属音质<br>\
+                                参数：普通分辨率默认参数<br>\
+                                "
+                }
+                showResult()
+            } else {
+                boolean = null
+                t1.style.display = 'none'
+                p1.innerHTML = "压制方案筛选-第3步-高音质需求选择"
+                p2.innerHTML = "请问您是否需要大会员专属音质？<br>\
+                                如果需要，您的大会员粉丝可以听到320kbps的高音质，但普通观众只能听到二压后的普通音质。<br>\
+                                不管您需不需要，这个选项都不会对画质造成任何影响，这点请您放心。"
+                b2.style.display = 'none'
+                b3.style.display = 'block'
+                state = "filtOther5"
+            }
+        }
+
+        function filtOther5() {
+            vol = boolean
+            if (vol) {
+                if (horizontal) {
+                    result = "推荐您的压制方案：<br>\
+                                宽度：" + lengthx + "<br>\
+                                高度：" + shortx + "<br>\
+                                码率：手册中的码率B<br>\
+                                音频：大会员专属音质<br>\
+                                参数：普通分辨率默认参数<br>\
+                                "
+                } else {
+                    result = "推荐您的压制方案：<br>\
+                                宽度：" + shortx + "<br>\
+                                高度：" + lengthx + "<br>\
+                                码率：手册中的码率B<br>\
+                                音频：大会员专属音质<br>\
+                                参数：普通分辨率默认参数<br>\
+                                "
+                }
+            } else {
+                if (horizontal) {
+                    result = "推荐您的压制方案：<br>\
+                                宽度：" + lengthx + "<br>\
+                                高度：" + shortx + "<br>\
+                                码率：手册中的码率B<br>\
+                                音频：普通用户音质<br>\
+                                参数：普通分辨率默认参数<br>\
+                                "
+                } else {
+                    result = "推荐您的压制方案：<br>\
+                                宽度：" + shortx + "<br>\
+                                高度：" + lengthx + "<br>\
+                                码率：手册中的码率B<br>\
+                                音频：普通用户音质<br>\
+                                参数：普通分辨率默认参数<br>\
+                                "
+                } //缩至1080P方案甄选完成
             }
             showResult()
-        }//720P方案甄选完成
-        function filtOther(){
-
         }
-        function showResult(){
 
+        function showResult() {
+            document.getElementById("setting_card").style.display="none"
+            document.getElementById("result_card").style.display="block"
+            document.getElementById("result_text").innerHTML=result
         }
 
         function myrefresh() {
                 window.location.reload();
             }
-        //setTimeout('myrefresh()',500); //指定1秒刷新一次
+            //setTimeout('myrefresh()',500); //指定1秒刷新一次
     </script>
 </body>
 
