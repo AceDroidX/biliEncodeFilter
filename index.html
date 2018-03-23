@@ -64,8 +64,7 @@
                         <br>基于Microsoft Office Excel VBA
                         <br>可在Windows平台和MacOS平台通用
                         <br>
-                        <br>网页版由AceDroidX编写
-                        <br>(https://wangxuxin.github.io)
+                        <br>网页版由<a href="https://wangxuxin.github.io">AceDroidX</a>编写
                         <br>
                         <br>适配B站2018新直传规格
                         <br>隶属第七版小白哗哩哔哩免二压完全压制手册：
@@ -114,26 +113,15 @@
                     </div>
                 </div>
 
-                <div class="mdl-card mdl-shadow--2dp" style="margin-top: 50px;margin-bottom: 50px;">
+                <div class="mdl-card mdl-shadow--2dp" id="result_card" style="display: none;margin-top: 50px;margin-bottom: 50px;">
                     <div class="mdl-card__title">
-                        计算结果
+                        推荐的压制方案
                     </div>
                     <div class="mdl-card__supporting-text">
-                        <p id="result">
-                            计算终止原因：null
-                            <br>经验值：null
-                            <br>剩余硬币数：null
-                            <br>登录天数：null
+                        <p id="result_text">
                         </p>
                     </div>
                 </div>
-                <p style="margin-bottom: 1px;text-align: center;margin: auto;">
-                            By AceDroidX<br>
-                            <button class="mdl-button mdl-js-button mdl-js-ripple-effect" style="text-transform: none" onclick="window.open('https://github.com/wangxuxin')">
-                            https://wangxuxin.github.io
-                            </button>
-                        </p>
-
 
             </div>
         </main>
@@ -241,6 +229,7 @@
             b3.style.display='none'
             state=""
         }
+        //function 
 
         function myrefresh() {
                 window.location.reload();
