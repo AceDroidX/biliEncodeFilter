@@ -143,6 +143,11 @@
         var shortx
         var lengthx
         var division
+        var fps
+        var dalao
+        var vol
+
+        var result
 
         function start(){
             console.log(state)
@@ -166,6 +171,18 @@
 
                 case "oneCheck3":
                 oneCheck3()
+                break
+
+                case "filt720p":
+                filt720p()
+                break
+
+                case "filt720p2":
+                filt720p2()
+                break
+
+                case "filt720p3":
+                filt720p3()
                 break
             }
         }
@@ -293,6 +310,257 @@
                 shortx=shortx+4
                 division=1
             }
+
+            if(shortx==720){
+                getfps()
+            }else{
+                filtOther()
+            }
+        }
+        function getfps(){
+            t1.value=""
+            b1.style.display='none'
+            t1.style.display='block'
+            p1.innerHTML = "压制方案筛选-第1.5步-输入帧率"
+            p2.innerHTML = "请输入您从Mediainfo中读到的视频帧率："
+            b2.style.display='block'
+            b3.style.display='none'
+            state="filt720p"
+        }
+        function filt720p(){
+            fps=parseInt(document.getElementById("t1").value);
+            if(fps<5||fps>144){
+                alert(您输入了非法的帧率！请重新确认您的输入！)
+                getfps()
+            }
+            if(fps<48){
+                if(short<720){
+                    if(horizontal){
+                        result="推荐您的压制方案：<br>\
+                                宽度：" + lengthx + "<br>\
+                                高度：" + shortx + "<br>\
+                                码率：手册中的码率A<br>\
+                                音频：普通用户音质<br>\
+                                参数：普通分辨率默认参数<br>\
+                                "
+                    }else{
+                        result="推荐您的压制方案：<br>\
+                                宽度：" + shortx + "<br>\
+                                高度：" + lengthx + "<br>\
+                                码率：手册中的码率A<br>\
+                                音频：普通用户音质<br>\
+                                参数：普通分辨率默认参数<br>\
+                                "
+                    }
+                }else{
+                    if(division==1){
+                        if(horizontal){
+                            result="推荐您的压制方案：<br>\
+                                宽度：" + lengthx + "<br>\
+                                高度：" + shortx + "<br>\
+                                码率：手册中的码率A<br>\
+                                音频：普通用户音质<br>\
+                                参数：普通分辨率默认参数<br>\
+                                "
+                        }else{
+                            result="推荐您的压制方案：<br>\
+                                宽度：" + shortx + "<br>\
+                                高度：" + lengthx + "<br>\
+                                码率：手册中的码率A<br>\
+                                音频：普通用户音质<br>\
+                                参数：普通分辨率默认参数<br>\
+                                "
+                        }
+                    }else{
+                        result="推荐您的压制方案：<br>\
+                                请勾选“保持原分辨率”选框<br>\
+                                码率：手册中的码率A<br>\
+                                音频：普通用户音质<br>\
+                                参数：普通分辨率默认参数<br>\
+                                "
+                    }
+                }
+                showResult()
+            }else{
+                boolean=null
+                t1.style.display='block'
+                p1.innerHTML = "压制方案筛选-第2步-大会员画质需求选择"
+                p2.innerHTML = "请问您是否需要大会员专属画质？<br>\
+                                如果需要，您的大会员粉丝可以得到更好的视频质量，但普通观众只能看到二压后的普通画质。<br>\
+                                如不需要，则所有观众都能看到同样的画面（包括高帧率），但视频质量会稍有降低。<br>\
+                                ##################################<br>\
+                                特别注意！特别注意！特别注意！特别注意！如果您的视频题材是游戏录像、MMD、3DCG这三者其中之一，请直接选择“是”！只有大会员专属画质才能满足这三种题材的需求！"
+                b2.style.display='block'
+                b3.style.display='none'
+                state="filt720p2"
+            }
+        }
+        function filt720p2(){
+            dalao=boolean
+            if(dalao){
+                if(short<720){
+                    if(horizontal){
+                        result="推荐您的压制方案：<br>\
+                                宽度：" + lengthx + "<br>\
+                                高度：" + shortx + "<br>\
+                                码率：手册中的码率B<br>\
+                                音频：大会员专属音质<br>\
+                                参数：普通分辨率默认参数<br>\
+                                "
+                    }else{
+                        result="推荐您的压制方案：<br>\
+                                宽度：" + shortx + "<br>\
+                                高度：" + lengthx + "<br>\
+                                码率：手册中的码率B<br>\
+                                音频：大会员专属音质<br>\
+                                参数：普通分辨率默认参数<br>\
+                                "
+                    }
+                }else{
+                    if(division==1){
+                        if(horizontal){
+                            result="推荐您的压制方案：<br>\
+                                宽度：" + lengthx + "<br>\
+                                高度：" + shortx + "<br>\
+                                码率：手册中的码率B<br>\
+                                音频：大会员专属音质<br>\
+                                参数：普通分辨率默认参数<br>\
+                                "
+                        }else{
+                            result="推荐您的压制方案：<br>\
+                                宽度：" + shortx + "<br>\
+                                高度：" + lengthx + "<br>\
+                                码率：手册中的码率B<br>\
+                                音频：大会员专属音质<br>\
+                                参数：普通分辨率默认参数<br>\
+                                "
+                        }
+                    }else{
+                        result="推荐您的压制方案：<br>\
+                                请勾选“保持原分辨率”选框<br>\
+                                码率：手册中的码率B<br>\
+                                音频：大会员专属音质<br>\
+                                参数：普通分辨率默认参数<br>\
+                                "
+                    }
+                }
+                showResult()
+            }else{
+                boolean=null
+                t1.style.display='block'
+                p1.innerHTML = "压制方案筛选-第3步-高音质需求选择"
+                p2.innerHTML = "请问您是否需要大会员专属音质？<br>\
+                                如果需要，您的大会员粉丝可以听到320kbps的高音质，但普通观众只能听到二压后的普通音质。<br>\
+                                不管您需不需要，这个选项都不会对画质造成任何影响，这点请您放心。"
+                b2.style.display='block'
+                b3.style.display='none'
+                state="filt720p3"
+            }
+        }
+        function filt720p3(){
+            vol=boolean
+            if(vol){
+                if(short<720){
+                    if(horizontal){
+                        result="推荐您的压制方案：<br>\
+                                宽度：" + lengthx + "<br>\
+                                高度：" + shortx + "<br>\
+                                码率：手册中的码率A<br>\
+                                音频：大会员专属音质<br>\
+                                参数：普通分辨率默认参数<br>\
+                                "
+                    }else{
+                        result="推荐您的压制方案：<br>\
+                                宽度：" + shortx + "<br>\
+                                高度：" + lengthx + "<br>\
+                                码率：手册中的码率A<br>\
+                                音频：大会员专属音质<br>\
+                                参数：普通分辨率默认参数<br>\
+                                "
+                    }
+                }else{
+                    if(division==1){
+                        if(horizontal){
+                            result="推荐您的压制方案：<br>\
+                                宽度：" + lengthx + "<br>\
+                                高度：" + shortx + "<br>\
+                                码率：手册中的码率A<br>\
+                                音频：大会员专属音质<br>\
+                                参数：普通分辨率默认参数<br>\
+                                "
+                        }else{
+                            result="推荐您的压制方案：<br>\
+                                宽度：" + shortx + "<br>\
+                                高度：" + lengthx + "<br>\
+                                码率：手册中的码率A<br>\
+                                音频：大会员专属音质<br>\
+                                参数：普通分辨率默认参数<br>\
+                                "
+                        }
+                    }else{
+                        result="推荐您的压制方案：<br>\
+                                请勾选“保持原分辨率”选框<br>\
+                                码率：手册中的码率A<br>\
+                                音频：大会员专属音质<br>\
+                                参数：普通分辨率默认参数<br>\
+                                "
+                    }
+                }
+            }else{
+                if(short<720){
+                    if(horizontal){
+                        result="推荐您的压制方案：<br>\
+                                宽度：" + lengthx + "<br>\
+                                高度：" + shortx + "<br>\
+                                码率：手册中的码率A<br>\
+                                音频：普通用户音质<br>\
+                                参数：普通分辨率默认参数<br>\
+                                "
+                    }else{
+                        result="推荐您的压制方案：<br>\
+                                宽度：" + shortx + "<br>\
+                                高度：" + lengthx + "<br>\
+                                码率：手册中的码率A<br>\
+                                音频：普通用户音质<br>\
+                                参数：普通分辨率默认参数<br>\
+                                "
+                    }
+                }else{
+                    if(division==1){
+                        if(horizontal){
+                            result="推荐您的压制方案：<br>\
+                                宽度：" + lengthx + "<br>\
+                                高度：" + shortx + "<br>\
+                                码率：手册中的码率A<br>\
+                                音频：普通用户音质<br>\
+                                参数：普通分辨率默认参数<br>\
+                                "
+                        }else{
+                            result="推荐您的压制方案：<br>\
+                                宽度：" + shortx + "<br>\
+                                高度：" + lengthx + "<br>\
+                                码率：手册中的码率A<br>\
+                                音频：普通用户音质<br>\
+                                参数：普通分辨率默认参数<br>\
+                                "
+                        }
+                    }else{
+                        result="推荐您的压制方案：<br>\
+                                请勾选“保持原分辨率”选框<br>\
+                                码率：手册中的码率A<br>\
+                                音频：普通用户音质<br>\
+                                参数：普通分辨率默认参数<br>\
+                                "
+                    }
+                }
+            }
+            showResult()
+        }//720P方案甄选完成
+        function filtOther(){
+
+        }
+        function showResult(){
+
         }
 
         function myrefresh() {
