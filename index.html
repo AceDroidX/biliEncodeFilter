@@ -43,10 +43,7 @@
         <div class="mdl-layout__drawer">
             <span class="mdl-layout-title">哔哩哔哩2018新直传压制方案筛选工具web版V1.0</span>
             <nav class="mdl-navigation">
-                <a class="mdl-navigation__link" href="./index.html">经验值计算</a>
-                <a class="mdl-navigation__link" href="./help.html">工具用法&amp;原理</a>
-                <a class="mdl-navigation__link" href="./links.html">相关链接</a>
-                <a class="mdl-navigation__link" href="./about.html">关于作者</a>
+                <!--a class="mdl-navigation__link" href="./about.html">关于作者</a-->
             </nav>
         </div>
         <main class="mdl-layout__content">
@@ -143,6 +140,9 @@
         var length
         var horizontal//横向
         var boolean=null
+        var shortx
+        var lengthx
+        var division
 
         function start(){
             console.log(state)
@@ -197,8 +197,7 @@
                 alert("该分辨率比例超限无法上传! 推荐使用≤16.9的比例! 请再次确认您是否输入正确")
                 first()
             }else{
-                state="oneCheck2"
-                start()
+                oneCheck2()
             }
         }
         function oneCheck2(){
@@ -227,9 +226,74 @@
             p2.innerHTML = "您输入的分辨率("+tmp+")已确认"//，且符合MPEG规范与B站上传范围"
             b2.style.display='block'
             b3.style.display='none'
-            state=""
+            checkRes()
         }
-        //function 
+        function checkRes(){
+            var aaa
+            var bbb
+            var ccc
+            var ddd
+            var eee
+            if(short<720){
+                alert("短边分辨率小于720，将为您自动放大分辨率")
+                shortx=720
+                aaa=Math.round(720*length/short)
+                if(aaa%4==0){
+                    lengthx=aaa
+                }else{
+                    while(aaa%4==0){
+                        aaa+=1
+                    }
+                    lengthx=aaa
+                }
+            }else if(short>2160||length>3840){
+                alert("分辨率超出4K标准，将为您自动推荐缩减分辨率")
+                bbb=2160
+                ccc=Math.round(bbb*length/short)
+                if(ccc>3840){
+                    ddd=3840
+                    eee=Math.round(short*ddd/length)
+                    if(eee%4==0){
+                        lengthx=ddd
+                        shortx=eee
+                    }else{
+                        while(eee%4==0){
+                            eee-=1
+                        }
+                        lengthx=ddd
+                        shortx=eee
+                    }
+                }else{//若计算后长边小于等于3840
+                    if(ccc%4==0){
+                        lengthx=ccc
+                        shortx=bbb
+                    }else{
+                        while(ccc%4==0){
+                            ccc-=1
+                        }
+                        lengthx=ccc
+                        shortx=bbb
+                    }
+                }
+            }else{//若既不低于720p又不高于4k
+                if(short%4>0){
+                    division=1
+                    shortx=short+2
+                }else{
+                    shortx=short
+                }
+                if(length%4>0){
+                    division=1
+                    lengthx=length+2
+                }else{
+                    lengthx=length
+                }//720-4k不能被4整除转化
+            }//低于720和高于4k裁剪完成
+            if(short>=480&&shortx==720&&lengthx>1280){
+                shortx=shortx+4
+                division=1
+            }
+        }
 
         function myrefresh() {
                 window.location.reload();
