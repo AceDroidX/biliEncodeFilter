@@ -142,8 +142,8 @@
         var b3 = document.getElementById("b3")
 
         var state = "first" //运行状态
-        var short
-        var length
+        var short=""
+        var length=""
         var horizontal //横向
         var boolean = null
         var shortx
@@ -160,7 +160,7 @@
 
         function start() {
             console.log(state)
-            console.log(boolean)
+            console.log("boolean:"+boolean)
             switch (state) {
             case "first":
                 first()
@@ -203,19 +203,19 @@
                 break
 
             case "filtOther2":
-                filtOther1()
+                filtOther2()
                 break
 
             case "filtOther3":
-                filtOther1()
+                filtOther3()
                 break
 
             case "filtOther4":
-                filtOther1()
+                filtOther4()
                 break
 
             case "filtOther5":
-                filtOther1()
+                filtOther5()
                 break
             }
         }
@@ -241,10 +241,14 @@
         function oneCheck1() {
             length = parseInt(document.getElementById("t1").value);
             t1.value = ""
+            console.log("short&length:")
+            console.log(short)
+            console.log(length)
+            console.log("---")
             if (short > length) {
                 alert("您把大数和小数输反了! 请重新确认您的输入!")
                 first()
-            }else if(short==""||length==""){
+            }else if(short==""||length==""||isNaN(short)||isNaN(length)||short==null||length==null){
                 alert("分辨率不能为空值！")
                 first()
             }else if(short%2==1||short<144){
@@ -681,64 +685,65 @@
         }
 
         function filtOther2() { //高音质需求选择
-                vol = boolean
-                if (vol) {
-                    if (division == 1) {
-                        if (horizontal) {
-                            result = "推荐您的压制方案：<br>\
+            console.log("vol:"+vol)
+            vol = boolean
+            if (vol) {
+                if (division == 1) {
+                    if (horizontal) {
+                        result = "推荐您的压制方案：<br>\
                                 宽度：" + lengthx + "<br>\
                                 高度：" + shortx + "<br>\
                                 码率：手册中的码率B<br>\
                                 音频：大会员专属音质<br>\
                                 参数：普通分辨率默认参数<br>\
                                 "
-                        } else {
-                            result = "推荐您的压制方案：<br>\
-                                宽度：" + shortx + "<br>\
-                                高度：" + lengthx + "<br>\
-                                码率：手册中的码率B<br>\
-                                音频：大会员专属音质<br>\
-                                参数：普通分辨率默认参数<br>\
-                                "
-                        }
                     } else {
                         result = "推荐您的压制方案：<br>\
-                                请勾选“保持原分辨率”选框<br>\
+                                宽度：" + shortx + "<br>\
+                                高度：" + lengthx + "<br>\
                                 码率：手册中的码率B<br>\
                                 音频：大会员专属音质<br>\
                                 参数：普通分辨率默认参数<br>\
                                 "
                     }
                 } else {
-                    if (division == 1) {
-                        if (horizontal) {
-                            result = "推荐您的压制方案：<br>\
+                        result = "推荐您的压制方案：<br>\
+                                请勾选“保持原分辨率”选框<br>\
+                                码率：手册中的码率B<br>\
+                                音频：大会员专属音质<br>\
+                                参数：普通分辨率默认参数<br>\
+                                "
+                }
+            } else {
+                if (division == 1) {
+                    if (horizontal) {
+                        result = "推荐您的压制方案：<br>\
                                 宽度：" + lengthx + "<br>\
                                 高度：" + shortx + "<br>\
                                 码率：手册中的码率B<br>\
                                 音频：普通用户音质<br>\
                                 参数：普通分辨率默认参数<br>\
                                 "
-                        } else {
-                            result = "推荐您的压制方案：<br>\
+                    } else {
+                        result = "推荐您的压制方案：<br>\
                                 宽度：" + shortx + "<br>\
                                 高度：" + lengthx + "<br>\
                                 码率：手册中的码率B<br>\
                                 音频：普通用户音质<br>\
                                 参数：普通分辨率默认参数<br>\
                                 "
-                        }
-                    } else {
+                    }
+                } else {
                         result = "推荐您的压制方案：<br>\
                                 请勾选“保持原分辨率”选框<br>\
                                 码率：手册中的码率B<br>\
                                 音频：普通用户音质<br>\
                                 参数：普通分辨率默认参数<br>\
                                 "
-                    }
                 }
-                showResult()
-            } //720P-1080P方案甄选完成
+            }
+            showResult()
+        } //720P-1080P方案甄选完成
 
         function filtOther3() { //超高分辨率缩放
             var fff
