@@ -12,7 +12,7 @@
     <style>
         .mdl-card {
             /*width: fit-content;*/
-            width: 500px;
+            width: fit-content;
             margin-left: auto;
             margin-right: auto;
         }
@@ -90,8 +90,9 @@
                         </p>
                         <form action="#">
                             <div class="mdl-textfield mdl-js-textfield">
-                                <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="t1" style="display: none;">
-                                <label class="mdl-textfield__label" for="sample2"></label> <span class="mdl-textfield__error">Input is not a number!</span>
+                                <!--input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="t1" style="display: none;"-->
+                                <input class="mdl-textfield__input" type="text" pattern="[0-9]*([0-9]+)?" id="t1" style="display: none;">
+                                <label class="mdl-textfield__label" for="sample2"></label> <span class="mdl-textfield__error">必须输入正整数!</span>
                             </div>
                         </form>
                     </div>
@@ -242,6 +243,9 @@
             t1.value = ""
             if (short > length) {
                 alert("您把大数和小数输反了! 请重新确认您的输入!")
+                first()
+            }else if(short==""||length==""){
+                alert("分辨率不能为空值！")
                 first()
             }else if(short%2==1||short<144){
                 alert("输入了非法的分辨率！分辨率必须为整数且大于144！请重新确认您的输入！")
