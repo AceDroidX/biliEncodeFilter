@@ -243,8 +243,14 @@
             if (short > length) {
                 alert("您把大数和小数输反了! 请重新确认您的输入!")
                 first()
+            }else if(short%2==1||short<144){
+                alert("输入了非法的分辨率！分辨率必须为整数且大于144！请重新确认您的输入！")
+                first()
+            }else if(length%2==1||length<144){
+                alert("输入了非法的分辨率！分辨率必须为整数且大于144！请重新确认您的输入！")
+                first()
             } else if ((short / length) < 0.375) {
-                alert("该分辨率比例超限无法上传! 推荐使用≤16.9的比例! 请再次确认您是否输入正确")
+                alert("该分辨率比例超限无法上传! 推荐使用≤16:9的比例! 请再次确认您是否输入正确")
                 first()
             } else {
                 oneCheck2()
