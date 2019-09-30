@@ -22,8 +22,8 @@
             <v-text-field :label="cardlabel" v-model="cardinput"></v-text-field>
           </v-card-text>
           <v-card-actions>
-            <v-btn text @click="run(1)" :style="cardbtndp">{{cardbtn}}</v-btn>
-            <v-btn text @click="run(2)" :style="cardbtndp2">{{cardbtn2}}</v-btn>
+            <v-btn text @click="onbtn(1)" :style="cardbtndp">{{cardbtn}}</v-btn>
+            <v-btn text @click="onbtn(2)" :style="cardbtndp2">{{cardbtn2}}</v-btn>
           </v-card-actions>
         </v-card>
       </v-col>
@@ -51,6 +51,11 @@ export default {
     hfps: 0
   }),
   methods: {
+    setcard:function(text,btn,step){
+      this.cardtext=text
+      this.switchbtn(btn)
+      this.step=step
+    },
     switchbtn: function(mode) {
       if (mode == 1) {
         this.cardbtn = "Next";
@@ -64,32 +69,38 @@ export default {
         this.cardbtndp2 = "display:block";
         this.cardindp = "display:none";
       } else if (mode == 3) {
-        this.cardbtndp = "display:none";
+        this.cardbtn = "重新运行";
+        this.cardbtndp = "display:block";
         this.cardbtndp2 = "display:none";
         this.cardindp = "display:none";
       }
     },
-    run: function(b) {
+    onbtn: function(b) {
       var input = this.cardinput;
       this.cardinput = "";
+      var res
+      var newproduct
+      var ratio
       switch (this.step) {
+        case 10000:
+        case 9999:
         case 0:
-          this.cardindp = "display:block";
-          this.cardtext = "输入分辨率(宽x高 例如1920x1080)";
-          this.step = 1;
+          this.setcard("输入分辨率(宽x高 例如1920x1080)",1,1)
           break;
         case 1:
-          var res = input.split("x");
+          res = input.split("x");
           res[0] = parseInt(res[0]);
           res[1] = parseInt(res[1]);
           if (res[0] <= 144 || res[1] <= 144) {
             this.cardtext = "分辨率过小";
             this.step = 9999;
+            this.switchbtn(3);
             return;
           }
           if (res[0] % 2 != 0 || res[1] % 2 != 0) {
             this.cardtext = "分辨率不合法，必须为偶数";
             this.step = 9999;
+            this.switchbtn(3);
             return;
           }
           this.res = res;
@@ -110,9 +121,9 @@ export default {
             this.cardtext = "输入视频帧率";
           } else {
             if (this.product > 2073600) {
-              var res = this.res;
-              var newproduct = 0;
-              var ratio = res[0] / res[1];
+              res = this.res;
+              newproduct = 0;
+              ratio = res[0] / res[1];
               if (res[0] % 4 != 0) {
                 res[0] = res[0] - 2;
               } else {
@@ -163,6 +174,7 @@ export default {
             this.cardtext =
               "帧率过高，请使用Handbrake（用法见问6附）或非编软件缩小至60FPS";
             this.step = 9999;
+            this.switchbtn(3);
             return;
           } else if (this.fps >= 48) {
             this.hfps = 1;
@@ -170,9 +182,9 @@ export default {
             this.hfps = 0;
           }
           if (this.hfps == 0 && this.interlace == 0) {
-            var res = this.res;
-            var newproduct = 0;
-            var ratio = res[0] / res[1];
+            res = this.res;
+            newproduct = 0;
+            ratio = res[0] / res[1];
             if (res[0] % 4 != 0) {
               res[0] = res[0] + 2;
             } else {
@@ -192,9 +204,9 @@ export default {
             return;
           } else {
             if (this.product <= 409920) {
-              var res = this.res;
-              var newproduct = 0;
-              var ratio = res[0] / res[1];
+              res = this.res;
+              newproduct = 0;
+              ratio = res[0] / res[1];
               if (res[0] % 4 != 0) {
                 res[0] = res[0] + 2;
               } else {
