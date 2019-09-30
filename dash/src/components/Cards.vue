@@ -63,6 +63,10 @@ export default {
         this.cardbtndp = "display:block";
         this.cardbtndp2 = "display:block";
         this.cardindp = "display:none";
+      } else if (mode == 3) {
+        this.cardbtndp = "display:none";
+        this.cardbtndp2 = "display:none";
+        this.cardindp = "display:none";
       }
     },
     run: function(b) {
@@ -128,10 +132,12 @@ export default {
                   "和高度" +
                   res[1] +
                   "，并按照码率B来处理，并按照手册文末问答2执行反交错操作";
+                this.switchbtn(3);
                 this.step = 10000;
                 return;
               } else {
                 this.cardtext = "请输入宽度wb和高度hb，并按照码率B来处理";
+                this.switchbtn(3);
                 this.step = 10000;
                 return;
               }
@@ -139,10 +145,12 @@ export default {
               if (this.interlace == 1) {
                 this.cardtext =
                   "请勾选保持原分辨率，按照码率B处理，并按照手册文末问答2执行反交错操作";
+                this.switchbtn(3);
                 this.step = 10000;
                 return;
               } else {
                 this.cardtext = "请勾选保持原分辨率，并按照码率B处理";
+                this.switchbtn(3);
                 this.step = 10000;
                 return;
               }
@@ -179,6 +187,7 @@ export default {
             }
             this.cardtext =
               "请输入宽度" + res[0] + "和高度" + res[1] + "，并按照码率B来处理";
+            this.switchbtn(3);
             this.step = 10000;
             return;
           } else {
@@ -206,10 +215,12 @@ export default {
                   res[1] +
                   "，并按照码率A来处理，并按照手册文末问答2执行反交错操作";
                 this.step = 10000;
+                this.switchbtn(3);
                 return;
               } else {
                 this.cardtext = "请输入宽度wb和高度hb，并按照码率A来处理";
                 this.step = 10000;
+                this.switchbtn(3);
                 return;
               }
             } else {
@@ -217,10 +228,12 @@ export default {
                 this.cardtext =
                   "请勾选保持原分辨率，按照码率A处理，并按照手册文末问答2执行反交错操作";
                 this.step = 10000;
+                this.switchbtn(3);
                 return;
               } else {
                 this.cardtext = "请勾选保持原分辨率，并按照码率A处理";
                 this.step = 10000;
+                this.switchbtn(3);
                 return;
               }
             }
