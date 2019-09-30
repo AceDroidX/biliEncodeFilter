@@ -19,7 +19,7 @@
             <div class="text--primary">{{cardtext}}</div>
           </v-card-text>
           <v-card-text :style="cardindp">
-            <v-text-field :label="cardlabel" v-model="cardinput"></v-text-field>
+            <v-text-field :label="cardlabel" @keyup="keyup()" v-model="cardinput"></v-text-field>
           </v-card-text>
           <v-card-actions>
             <v-btn text @click="onbtn(1)" :style="cardbtndp">{{cardbtn}}</v-btn>
@@ -51,12 +51,15 @@ export default {
     hfps: 0
   }),
   methods: {
-    setcard:function(text,btn,step){
-      this.cardtext=text
-      this.switchbtn(btn)
-      this.step=step
+    keyup: function () {
+      if (event.keyCode == 13) this.onbtn(1)
     },
-    switchbtn: function(mode) {
+    setcard: function (text, btn, step) {
+      this.cardtext = text;
+      this.switchbtn(btn);
+      this.step = step;
+    },
+    switchbtn: function (mode) {
       if (mode == 1) {
         this.cardbtn = "Next";
         this.cardbtndp = "display:block";
@@ -75,39 +78,33 @@ export default {
         this.cardindp = "display:none";
       }
     },
-    onbtn: function(b) {
+    onbtn: function (b) {
       var input = this.cardinput;
       this.cardinput = "";
-      var res
-      var newproduct
-      var ratio
+      var res;
+      var newproduct;
+      var ratio;
       switch (this.step) {
         case 10000:
         case 9999:
         case 0:
-          this.setcard("输入分辨率(宽x高 例如1920x1080)",1,1)
+          this.setcard("输入分辨率(宽x高 例如1920x1080)", 1, 1);
           break;
         case 1:
           res = input.split("x");
           res[0] = parseInt(res[0]);
           res[1] = parseInt(res[1]);
           if (res[0] <= 144 || res[1] <= 144) {
-            this.cardtext = "分辨率过小";
-            this.step = 9999;
-            this.switchbtn(3);
+            this.setcard("分辨率过小", 3, 9999);
             return;
           }
           if (res[0] % 2 != 0 || res[1] % 2 != 0) {
-            this.cardtext = "分辨率不合法，必须为偶数";
-            this.step = 9999;
-            this.switchbtn(3);
+            this.setcard("分辨率不合法，必须为偶数", 3, 9999);
             return;
           }
           this.res = res;
           this.product = res[0] * res[1];
-          this.switchbtn(2);
-          this.cardtext = "请问您的视频是否为交错（隔行扫描）视频？";
-          this.step = 2;
+          this.setcard("请问您的视频是否为交错（隔行扫描）视频？", 2, 2);
           break;
         case 2:
           if (b == 1) {
@@ -116,9 +113,7 @@ export default {
             this.interlace = 0;
           }
           if (this.product <= 921600) {
-            this.step = 21;
-            this.switchbtn(1);
-            this.cardtext = "输入视频帧率";
+            this.setcard("输入视频帧率", 1, 21);
           } else {
             if (this.product > 2073600) {
               res = this.res;
@@ -137,32 +132,18 @@ export default {
                 }
               }
               if (this.interlace == 1) {
-                this.cardtext =
-                  "请输入宽度" +
-                  res[0] +
-                  "和高度" +
-                  res[1] +
-                  "，并按照码率B来处理，并按照手册文末问答2执行反交错操作";
-                this.switchbtn(3);
-                this.step = 10000;
+                this.setcard("请输入宽度" + res[0] + "和高度" + res[1] + "，并按照码率B来处理，并按照手册文末问答2执行反交错操作", 3, 10000);
                 return;
               } else {
-                this.cardtext = "请输入宽度wb和高度hb，并按照码率B来处理";
-                this.switchbtn(3);
-                this.step = 10000;
+                this.setcard("请输入宽度" + res[0] + "和高度" + res[1] + "，并按照码率B来处理", 3, 10000);
                 return;
               }
             } else {
               if (this.interlace == 1) {
-                this.cardtext =
-                  "请勾选保持原分辨率，按照码率B处理，并按照手册文末问答2执行反交错操作";
-                this.switchbtn(3);
-                this.step = 10000;
+                this.setcard("请勾选保持原分辨率，按照码率B处理，并按照手册文末问答2执行反交错操作", 3, 10000);
                 return;
               } else {
-                this.cardtext = "请勾选保持原分辨率，并按照码率B处理";
-                this.switchbtn(3);
-                this.step = 10000;
+                this.setcard("请勾选保持原分辨率，并按照码率B处理", 3, 10000);
                 return;
               }
             }
@@ -171,10 +152,7 @@ export default {
         case 21:
           this.fps = parseInt(input);
           if (this.fps > 60) {
-            this.cardtext =
-              "帧率过高，请使用Handbrake（用法见问6附）或非编软件缩小至60FPS";
-            this.step = 9999;
-            this.switchbtn(3);
+            this.setcard("帧率过高，请使用Handbrake（用法见问6附）或非编软件缩小至60FPS", 3, 9999);
             return;
           } else if (this.fps >= 48) {
             this.hfps = 1;
@@ -197,10 +175,7 @@ export default {
                 res[1] = res[1] + (4 - (res[1] % 4));
               }
             }
-            this.cardtext =
-              "请输入宽度" + res[0] + "和高度" + res[1] + "，并按照码率B来处理";
-            this.switchbtn(3);
-            this.step = 10000;
+            this.setcard("请输入宽度" + res[0] + "和高度" + res[1] + "，并按照码率B来处理", 3, 10000);
             return;
           } else {
             if (this.product <= 409920) {
@@ -220,32 +195,18 @@ export default {
                 }
               }
               if (this.interlace == 1) {
-                this.cardtext =
-                  "请输入宽度" +
-                  res[0] +
-                  "和高度" +
-                  res[1] +
-                  "，并按照码率A来处理，并按照手册文末问答2执行反交错操作";
-                this.step = 10000;
-                this.switchbtn(3);
+                this.setcard("请输入宽度" + res[0] + "和高度" + res[1] + "，并按照码率A来处理，并按照手册文末问答2执行反交错操作", 3, 10000);
                 return;
               } else {
-                this.cardtext = "请输入宽度wb和高度hb，并按照码率A来处理";
-                this.step = 10000;
-                this.switchbtn(3);
+                this.setcard("请输入宽度" + res[0] + "和高度" + res[1] + "，并按照码率A来处理", 3, 10000);
                 return;
               }
             } else {
               if (this.interlace == 1) {
-                this.cardtext =
-                  "请勾选保持原分辨率，按照码率A处理，并按照手册文末问答2执行反交错操作";
-                this.step = 10000;
-                this.switchbtn(3);
+                this.setcard("请勾选保持原分辨率，按照码率A处理，并按照手册文末问答2执行反交错操作", 3, 10000);
                 return;
               } else {
-                this.cardtext = "请勾选保持原分辨率，并按照码率A处理";
-                this.step = 10000;
-                this.switchbtn(3);
+                this.setcard("请勾选保持原分辨率，并按照码率A处理", 3, 10000);
                 return;
               }
             }
