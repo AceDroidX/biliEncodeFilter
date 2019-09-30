@@ -44,14 +44,14 @@ export default {
     cardbtndp2: "display:none",
     texts: [],
     step: 0,
-    res: [0, 0],
+    res: [0, 0], //分辨率 [宽,高]
     product: 0,
     interlace: 0,
     fps: 0,
     hfps: 0
   }),
   methods: {
-    switchbtn: mode => {
+    switchbtn: function(mode) {
       if (mode == 1) {
         this.cardbtn = "Next";
         this.cardbtndp = "display:block";
@@ -65,13 +65,16 @@ export default {
         this.cardindp = "display:none";
       }
     },
-    run: b => {
+    run: function(b) {
       var input = this.cardinput;
       this.cardinput = "";
       switch (this.step) {
         case 0:
           this.cardindp = "display:block";
           this.cardtext = "输入分辨率(宽x高 例如1920x1080)";
+          this.step = 1;
+          break;
+        case 1:
           var res = input.split("x");
           res[0] = parseInt(res[0]);
           res[1] = parseInt(res[1]);
@@ -87,11 +90,11 @@ export default {
           }
           this.res = res;
           this.product = res[0] * res[1];
-          this.step = 1;
-          break;
-        case 1:
           this.switchbtn(2);
           this.cardtext = "请问您的视频是否为交错（隔行扫描）视频？";
+          this.step = 2;
+          break;
+        case 2:
           if (b == 1) {
             this.interlace = 1;
           } else {
@@ -99,13 +102,54 @@ export default {
           }
           if (this.product <= 921600) {
             this.step = 21;
+            this.switchbtn(1);
+            this.cardtext = "输入视频帧率";
           } else {
-            this.step = 22;
+            if (this.product > 2073600) {
+              var res = this.res;
+              var newproduct = 0;
+              var ratio = res[0] / res[1];
+              if (res[0] % 4 != 0) {
+                res[0] = res[0] - 2;
+              } else {
+                while (newproduct <= 2073600) {
+                  res[0] = res[0] + 4;
+                  res[1] = Math.round(res[0] / ratio);
+                  newproduct = res[0] * res[1];
+                }
+                if (res[1] % 4 != 0) {
+                  res[1] = res[1] - (res[1] % 4);
+                }
+              }
+              if (this.interlace == 1) {
+                this.cardtext =
+                  "请输入宽度" +
+                  res[0] +
+                  "和高度" +
+                  res[1] +
+                  "，并按照码率B来处理，并按照手册文末问答2执行反交错操作";
+                this.step = 10000;
+                return;
+              } else {
+                this.cardtext = "请输入宽度wb和高度hb，并按照码率B来处理";
+                this.step = 10000;
+                return;
+              }
+            } else {
+              if (this.interlace == 1) {
+                this.cardtext =
+                  "请勾选保持原分辨率，按照码率B处理，并按照手册文末问答2执行反交错操作";
+                this.step = 10000;
+                return;
+              } else {
+                this.cardtext = "请勾选保持原分辨率，并按照码率B处理";
+                this.step = 10000;
+                return;
+              }
+            }
           }
           break;
         case 21:
-          this.switchbtn(1);
-          this.cardtext = "输入视频帧率";
           this.fps = parseInt(input);
           if (this.fps > 60) {
             this.cardtext =
@@ -118,10 +162,56 @@ export default {
             this.hfps = 0;
           }
           if (this.hfps == 0 && this.interlace == 0) {
-            ////////////////////////
+            var res = this.res;
+            var newproduct = 0;
+            var ratio = res[0] / res[1];
+            if (res[0] % 4 != 0) {
+              res[0] = res[0] + 2;
+            } else {
+              while (newproduct > 921600) {
+                res[0] = res[0] + 4;
+                res[1] = Math.round(res[0] / ratio);
+                newproduct = res[0] * res[1];
+              }
+              if (res[1] % 4 != 0) {
+                res[1] = res[1] + (4 - (res[1] % 4));
+              }
+            }
+            this.cardtext =
+              "请输入宽度" + res[0] + "和高度" + res[1] + "，并按照码率B来处理";
+            this.step = 10000;
+            return;
           } else {
             if (this.product <= 409920) {
-              //////////
+              var res = this.res;
+              var newproduct = 0;
+              var ratio = res[0] / res[1];
+              if (res[0] % 4 != 0) {
+                res[0] = res[0] + 2;
+              } else {
+                while (newproduct > 409920) {
+                  res[0] = res[0] + 4;
+                  res[1] = Math.round(res[0] / ratio);
+                  newproduct = res[0] * res[1];
+                }
+                if (res[1] % 4 != 0) {
+                  res[1] = res[1] + (4 - (res[1] % 4));
+                }
+              }
+              if (this.interlace == 1) {
+                this.cardtext =
+                  "请输入宽度" +
+                  res[0] +
+                  "和高度" +
+                  res[1] +
+                  "，并按照码率A来处理，并按照手册文末问答2执行反交错操作";
+                this.step = 10000;
+                return;
+              } else {
+                this.cardtext = "请输入宽度wb和高度hb，并按照码率A来处理";
+                this.step = 10000;
+                return;
+              }
             } else {
               if (this.interlace == 1) {
                 this.cardtext =
