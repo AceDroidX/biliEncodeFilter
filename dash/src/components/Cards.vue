@@ -121,9 +121,17 @@ export default {
               ratio = res[0] / res[1];
               if (res[0] % 4 != 0) {
                 res[0] = res[0] - 2;
+                while (newproduct <= 2073600) {
+                  res[0] = res[0] - 4;
+                  res[1] = Math.round(res[0] / ratio);
+                  newproduct = res[0] * res[1];
+                }
+                 if (res[1] % 4 != 0) {
+                  res[1] = res[1] - (res[1] % 4);
+                }
               } else {
                 while (newproduct <= 2073600) {
-                  res[0] = res[0] + 4;
+                  res[0] = res[0] - 4;
                   res[1] = Math.round(res[0] / ratio);
                   newproduct = res[0] * res[1];
                 }
@@ -165,6 +173,14 @@ export default {
             ratio = res[0] / res[1];
             if (res[0] % 4 != 0) {
               res[0] = res[0] + 2;
+              while (newproduct > 921600) {
+                res[0] = res[0] + 4;
+                res[1] = Math.round(res[0] / ratio);
+                newproduct = res[0] * res[1];
+              }
+              if (res[1] % 4 != 0) {
+                res[1] = res[1] + (4 - (res[1] % 4));
+              }
             } else {
               while (newproduct > 921600) {
                 res[0] = res[0] + 4;
@@ -184,6 +200,14 @@ export default {
               ratio = res[0] / res[1];
               if (res[0] % 4 != 0) {
                 res[0] = res[0] + 2;
+                while (newproduct > 409920) {
+                  res[0] = res[0] + 4;
+                  res[1] = Math.round(res[0] / ratio);
+                  newproduct = res[0] * res[1];
+                }
+                if (res[1] % 4 != 0) {
+                  res[1] = res[1] + (4 - (res[1] % 4));
+                }
               } else {
                 while (newproduct > 409920) {
                   res[0] = res[0] + 4;
