@@ -58,6 +58,7 @@ export default {
       this.cardtext = text;
       this.switchbtn(btn);
       this.step = step;
+      console.log(step)
     },
     switchbtn: function (mode) {
       if (mode == 1) {
@@ -117,12 +118,12 @@ export default {
           } else {
             if (this.product > 2073600) {
               res = this.res;
-              newproduct = 0;
+              newproduct = res[0]*res[1];
               ratio = res[0] / res[1];
               if (res[0] % 4 != 0) {
                 res[0] = res[0] - 2;
               }
-              while (newproduct <= 2073600) {
+              while (newproduct > 2073600) {
                 res[0] = res[0] - 4;
                 res[1] = Math.round(res[0] / ratio);
                 newproduct = res[0] * res[1];
@@ -160,15 +161,25 @@ export default {
           }
           if (this.hfps == 0 && this.interlace == 0) {
             res = this.res;
-            newproduct = 0;
+            newproduct = res[0]*res[1];
             ratio = res[0] / res[1];
             if (res[0] % 4 != 0) {
               res[0] = res[0] + 2;
             }
-            while (newproduct > 921600) {
+            console.log('-----------')
+            console.log(res)
+            console.log(ratio)
+            console.log(newproduct)
+            console.log('-----------')
+            while (newproduct <= 921600) {
               res[0] = res[0] + 4;
               res[1] = Math.round(res[0] / ratio);
               newproduct = res[0] * res[1];
+              console.log('-----------')
+              console.log(res)
+              console.log(ratio)
+              console.log(newproduct)
+              console.log('-----------')
             }
             if (res[1] % 4 != 0) {
               res[1] = res[1] + (4 - (res[1] % 4));
@@ -178,12 +189,12 @@ export default {
           } else {
             if (this.product <= 409920) {
               res = this.res;
-              newproduct = 0;
+              newproduct = res[0]*res[1];
               ratio = res[0] / res[1];
               if (res[0] % 4 != 0) {
                 res[0] = res[0] + 2;
               }
-              while (newproduct > 409920) {
+              while (newproduct <= 409920) {
                 res[0] = res[0] + 4;
                 res[1] = Math.round(res[0] / ratio);
                 newproduct = res[0] * res[1];
