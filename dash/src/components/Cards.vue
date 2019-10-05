@@ -121,23 +121,14 @@ export default {
               ratio = res[0] / res[1];
               if (res[0] % 4 != 0) {
                 res[0] = res[0] - 2;
-                while (newproduct <= 2073600) {
-                  res[0] = res[0] - 4;
-                  res[1] = Math.round(res[0] / ratio);
-                  newproduct = res[0] * res[1];
-                }
-                 if (res[1] % 4 != 0) {
-                  res[1] = res[1] - (res[1] % 4);
-                }
-              } else {
-                while (newproduct <= 2073600) {
-                  res[0] = res[0] - 4;
-                  res[1] = Math.round(res[0] / ratio);
-                  newproduct = res[0] * res[1];
-                }
-                if (res[1] % 4 != 0) {
-                  res[1] = res[1] - (res[1] % 4);
-                }
+              }
+              while (newproduct <= 2073600) {
+                res[0] = res[0] - 4;
+                res[1] = Math.round(res[0] / ratio);
+                newproduct = res[0] * res[1];
+              }
+              if (res[1] % 4 != 0) {
+                res[1] = res[1] - (res[1] % 4);
               }
               if (this.interlace == 1) {
                 this.setcard("请输入宽度" + res[0] + "和高度" + res[1] + "，并按照码率B来处理，并按照手册文末问答2执行反交错操作", 3, 10000);
@@ -173,23 +164,14 @@ export default {
             ratio = res[0] / res[1];
             if (res[0] % 4 != 0) {
               res[0] = res[0] + 2;
-              while (newproduct > 921600) {
-                res[0] = res[0] + 4;
-                res[1] = Math.round(res[0] / ratio);
-                newproduct = res[0] * res[1];
-              }
-              if (res[1] % 4 != 0) {
-                res[1] = res[1] + (4 - (res[1] % 4));
-              }
-            } else {
-              while (newproduct > 921600) {
-                res[0] = res[0] + 4;
-                res[1] = Math.round(res[0] / ratio);
-                newproduct = res[0] * res[1];
-              }
-              if (res[1] % 4 != 0) {
-                res[1] = res[1] + (4 - (res[1] % 4));
-              }
+            }
+            while (newproduct > 921600) {
+              res[0] = res[0] + 4;
+              res[1] = Math.round(res[0] / ratio);
+              newproduct = res[0] * res[1];
+            }
+            if (res[1] % 4 != 0) {
+              res[1] = res[1] + (4 - (res[1] % 4));
             }
             this.setcard("请输入宽度" + res[0] + "和高度" + res[1] + "，并按照码率B来处理", 3, 10000);
             return;
@@ -200,23 +182,14 @@ export default {
               ratio = res[0] / res[1];
               if (res[0] % 4 != 0) {
                 res[0] = res[0] + 2;
-                while (newproduct > 409920) {
-                  res[0] = res[0] + 4;
-                  res[1] = Math.round(res[0] / ratio);
-                  newproduct = res[0] * res[1];
-                }
-                if (res[1] % 4 != 0) {
-                  res[1] = res[1] + (4 - (res[1] % 4));
-                }
-              } else {
-                while (newproduct > 409920) {
-                  res[0] = res[0] + 4;
-                  res[1] = Math.round(res[0] / ratio);
-                  newproduct = res[0] * res[1];
-                }
-                if (res[1] % 4 != 0) {
-                  res[1] = res[1] + (4 - (res[1] % 4));
-                }
+              }
+              while (newproduct > 409920) {
+                res[0] = res[0] + 4;
+                res[1] = Math.round(res[0] / ratio);
+                newproduct = res[0] * res[1];
+              }
+              if (res[1] % 4 != 0) {
+                res[1] = res[1] + (4 - (res[1] % 4));
               }
               if (this.interlace == 1) {
                 this.setcard("请输入宽度" + res[0] + "和高度" + res[1] + "，并按照码率A来处理，并按照手册文末问答2执行反交错操作", 3, 10000);
