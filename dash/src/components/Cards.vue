@@ -123,9 +123,9 @@ export default {
               if (res[0] % 4 != 0) {
                 res[0] = res[0] - 2;
               }
-              for (var res0new = res[0]; res0new < 14400; res0new = res0new - 4) {
+              for (res0new = res[0]; res0new > 144; res0new = res0new - 4) {
                 res1new = res0new / ratio;
-                if ((res0new * res1new <= 2073600) && (res1new % 4 == 0) && (res0new * res1new > 912600)) {
+                if ((res0new * res1new <= 2073600) && (res0new * res1new > 912600) && (res1new % 4 == 0)) {
                   res[1] = Math.max(res1new)
                   res[0] = res[1] * ratio
                 } else {
@@ -166,9 +166,9 @@ export default {
           if (this.hfps == 0 && this.interlace == 0) {
             res = this.res;
             ratio = res[0] / res[1];
-            for (var res0new = res[0]; res0new < 14400; res0new = res0new + 4) {
+            for (res0new = res[0]; res0new < 14400; res0new = res0new + 4) {
               res1new = res0new / ratio;
-              if ((res0new * res1new <= 2073600) && (res1new % 4 == 0) && (res0new * res1new > 912600)) {
+              if ((res0new * res1new <= 2073600) && (res0new * res1new > 912600) && (res1new % 4 == 0)) {
                 res[1] = Math.min(res1new)
                 res[0] = res[1] * ratio
               } else {
@@ -184,9 +184,9 @@ export default {
             if (this.product <= 409920) {
               res = this.res;
               ratio = res[0] / res[1];
-              for (var res0new = res[0]; res0new < 6337; res0new = res0new + 4) {
+              for (res0new = res[0]; res0new < 6337; res0new = res0new + 4) {
                 res1new = res0new / ratio;
-                if ((res0new * res1new <= 921600) && (res1new % 4 == 0) && (res0new * res1new > 409920)) {
+                if ((res0new * res1new <= 921600) && (res0new * res1new > 409920) && (res1new % 4 == 0)) {
                   res[1] = Math.min(res1new)
                   res[0] = res[1] * ratio
                 } else {
