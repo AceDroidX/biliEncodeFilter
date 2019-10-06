@@ -84,6 +84,7 @@ export default {
       this.cardinput = "";
       var res;
       var ratio;
+      var resnew = [0, 0];
       var res0new;
       var res1new;
       switch (this.step) {
@@ -123,18 +124,16 @@ export default {
               if (res[0] % 4 != 0) {
                 res[0] = res[0] - 2;
               }
-              for (var res0new = res[0]; res0new < 14400; res0new = res0new - 4) {
-                res1new = res0new / ratio;
-                if ((res0new * res1new <= 2073600) && (res1new % 4 == 0) && (res0new * res1new > 912600)) {
-                  res[1] = Math.max(res1new)
-                  res[0] = res[1] * ratio
-                } else {
-                  if ((res0new * res1new <= 2073600) && (res0new * res1new > 912600) && (res1new % 4 == Math.min((4 - Math.max(res1new % 4)),Math.min(res1new % 4)))) {
-                    res[1] = res1new - (res1new % 4)
-                    res[0] = res0new
-                  }
+              var restmp = [0, 0]
+              while (resnew[0] * res1new > 912600) {
+                resnew[0] = resnew[0] - 4
+                resnew[1] = Math.round(resnew[0] / ratio)
+                if (res1new % 4 != 0) {
+                  continue
                 }
+                restmp = resnew
               }
+              res = restmp
               if (this.interlace == 1) {
                 this.setcard("请输入宽度" + res[0] + "和高度" + res[1] + "，并按照码率B来处理，并按照手册文末问答2执行反交错操作", 3, 10000);
                 return;
@@ -172,7 +171,7 @@ export default {
                 res[1] = Math.min(res1new)
                 res[0] = res[1] * ratio
               } else {
-                if ((res0new * res1new <= 2073600) && (res0new * res1new > 912600) && (res1new % 4 == Math.min((4 - Math.max(res1new % 4)),Math.min(res1new % 4)))) {
+                if ((res0new * res1new <= 2073600) && (res0new * res1new > 912600) && (res1new % 4 == Math.min((4 - Math.max(res1new % 4)), Math.min(res1new % 4)))) {
                   res[1] = res1new + (1 - (res1new % 4))
                   res[0] = res0new
                 }
@@ -190,7 +189,7 @@ export default {
                   res[1] = Math.min(res1new)
                   res[0] = res[1] * ratio
                 } else {
-                  if ((res0new * res1new <= 921600) && (res0new * res1new > 409920) && (res1new % 4 == Math.min((4 - Math.max(res1new % 4)),Math.min(res1new % 4)))) {
+                  if ((res0new * res1new <= 921600) && (res0new * res1new > 409920) && (res1new % 4 == Math.min((4 - Math.max(res1new % 4)), Math.min(res1new % 4)))) {
                     res[1] = res1new + (1 - (res1new % 4))
                     res[0] = res0new
                   }
