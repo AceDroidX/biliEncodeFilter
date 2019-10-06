@@ -6,10 +6,11 @@ install:
   - npm install
 
 script:
+  - cd dash
   - npm run build
 
 after_success:
-  - cd ./dist
+  - cd ../dist
   - mv index.html dash.html
   - mv old.html index.html
   - git init
