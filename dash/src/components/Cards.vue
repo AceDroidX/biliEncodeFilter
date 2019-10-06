@@ -125,10 +125,11 @@ export default {
                 res[0] = res[0] - 2;
               }
               var restmp = [0, 0]
-              while (resnew[0] * res1new > 912600) {
+              resnew=res
+              while (resnew[0] * resnew[1] > 912600) {
                 resnew[0] = resnew[0] - 4
                 resnew[1] = Math.round(resnew[0] / ratio)
-                if (res1new % 4 != 0) {
+                if (resnew[1] % 4 != 0) {
                   continue
                 }
                 restmp = resnew
