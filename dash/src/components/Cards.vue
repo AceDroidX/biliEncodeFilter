@@ -58,7 +58,6 @@ export default {
       this.cardtext = text;
       this.switchbtn(btn);
       this.step = step;
-      console.log(step)
     },
     switchbtn: function (mode) {
       if (mode == 1) {
@@ -120,22 +119,18 @@ export default {
           } else {
             if (this.product > 2073600) {
               res = this.res;
+              newproduct = 0;
               ratio = res[0] / res[1];
               if (res[0] % 4 != 0) {
                 res[0] = res[0] - 2;
               }
-              resnew[0] = res[0]//因为vue的特性 不能直接resnew=res
-              resnew[1] = res[1]
-              while (resnew[0] * resnew[1] > 921600) {
-                if (resnew[1] % 4 != 0) {
-                  resnew[0] = resnew[0] - 4
-                  resnew[1] = Math.round(resnew[0] / ratio)
-                  continue
-                }
-                res[0] = resnew[0]
-                res[1] = resnew[1]
-                resnew[0] = resnew[0] - 4
-                resnew[1] = Math.round(resnew[0] / ratio)
+              while (newproduct <= 2073600) {
+                res[0] = res[0] - 4;
+                res[1] = Math.round(res[0] / ratio);
+                newproduct = res[0] * res[1];
+              }
+              if (res[1] % 4 != 0) {
+                res[1] = res[1] - (res[1] % 4);
               }
               if (this.interlace == 1) {
                 this.setcard("请输入宽度" + res[0] + "和高度" + res[1] + "，并按照码率B来处理，并按照手册文末问答2执行反交错操作", 3, 10000);
@@ -167,36 +162,36 @@ export default {
           }
           if (this.hfps == 0 && this.interlace == 0) {
             res = this.res;
+            newproduct = 0;
             ratio = res[0] / res[1];
-            for (res0new = res[0]; res0new < 14400; res0new = res0new + 4) {
-              res1new = res0new / ratio;
-              if ((res0new * res1new <= 2073600) && (res1new % 4 == 0) && (res0new * res1new > 912600)) {
-                res[1] = Math.min(res1new)
-                res[0] = res[1] * ratio
-              } else {
-                if ((res0new * res1new <= 2073600) && (res0new * res1new > 912600) && (res1new % 4 == Math.min((4 - Math.max(res1new % 4)), Math.min(res1new % 4)))) {
-                  res[1] = res1new + (1 - (res1new % 4))
-                  res[0] = res0new
-                }
-              }
+            if (res[0] % 4 != 0) {
+              res[0] = res[0] + 2;
+            }
+            while (newproduct > 921600) {
+              res[0] = res[0] + 4;
+              res[1] = Math.round(res[0] / ratio);
+              newproduct = res[0] * res[1];
+            }
+            if (res[1] % 4 != 0) {
+              res[1] = res[1] + (4 - (res[1] % 4));
             }
             this.setcard("请输入宽度" + res[0] + "和高度" + res[1] + "，并按照码率B来处理", 3, 10000);
             return;
           } else {
             if (this.product <= 409920) {
               res = this.res;
+              newproduct = 0;
               ratio = res[0] / res[1];
-              for (res0new = res[0]; res0new < 6337; res0new = res0new + 4) {
-                res1new = res0new / ratio;
-                if ((res0new * res1new <= 921600) && (res1new % 4 == 0) && (res0new * res1new > 409920)) {
-                  res[1] = Math.min(res1new)
-                  res[0] = res[1] * ratio
-                } else {
-                  if ((res0new * res1new <= 921600) && (res0new * res1new > 409920) && (res1new % 4 == Math.min((4 - Math.max(res1new % 4)), Math.min(res1new % 4)))) {
-                    res[1] = res1new + (1 - (res1new % 4))
-                    res[0] = res0new
-                  }
-                }
+              if (res[0] % 4 != 0) {
+                res[0] = res[0] + 2;
+              }
+              while (newproduct > 409920) {
+                res[0] = res[0] + 4;
+                res[1] = Math.round(res[0] / ratio);
+                newproduct = res[0] * res[1];
+              }
+              if (res[1] % 4 != 0) {
+                res[1] = res[1] + (4 - (res[1] % 4));
               }
               if (this.interlace == 1) {
                 this.setcard("请输入宽度" + res[0] + "和高度" + res[1] + "，并按照码率A来处理，并按照手册文末问答2执行反交错操作", 3, 10000);
