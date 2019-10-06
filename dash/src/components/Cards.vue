@@ -58,6 +58,7 @@ export default {
       this.cardtext = text;
       this.switchbtn(btn);
       this.step = step;
+      console.log(step)
     },
     switchbtn: function (mode) {
       if (mode == 1) {
@@ -164,7 +165,7 @@ export default {
           }
           if (this.hfps == 0 && this.interlace == 0) {
             res = this.res;
-            newproduct = 0;
+            newproduct = res[0]*res[1];
             ratio = res[0] / res[1];
             for (res0new = res[0]; res0new < 14400; res0new = res0new + 4) {
               res1new = res0new / ratio;
@@ -183,7 +184,7 @@ export default {
           } else {
             if (this.product <= 409920) {
               res = this.res;
-              newproduct = 0;
+              newproduct = res[0]*res[1];
               ratio = res[0] / res[1];
               for (res0new = res[0]; res0new < 6337; res0new = res0new + 4) {
                 res1new = res0new / ratio;
