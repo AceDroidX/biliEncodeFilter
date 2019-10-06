@@ -82,8 +82,9 @@ export default {
       var input = this.cardinput;
       this.cardinput = "";
       var res;
-      var newproduct;
       var ratio;
+      var res0new;
+      var res1new;
       switch (this.step) {
         case 10000:
         case 9999:
@@ -117,26 +118,20 @@ export default {
           } else {
             if (this.product > 2073600) {
               res = this.res;
-              newproduct = 0;
               ratio = res[0] / res[1];
               if (res[0] % 4 != 0) {
                 res[0] = res[0] - 2;
-                while (newproduct <= 2073600) {
-                  res[0] = res[0] - 4;
-                  res[1] = Math.round(res[0] / ratio);
-                  newproduct = res[0] * res[1];
-                }
-                 if (res[1] % 4 != 0) {
-                  res[1] = res[1] - (res[1] % 4);
-                }
-              } else {
-                while (newproduct <= 2073600) {
-                  res[0] = res[0] - 4;
-                  res[1] = Math.round(res[0] / ratio);
-                  newproduct = res[0] * res[1];
-                }
-                if (res[1] % 4 != 0) {
-                  res[1] = res[1] - (res[1] % 4);
+              }
+              for (var res0new = res[0]; res0new < 14400; res0new = res0new - 4) {
+                res1new = res0new / ratio;
+                if ((res0new * res1new <= 2073600) && (res1new % 4 == 0) && (res0new * res1new > 912600)) {
+                  res[1] = Math.max(res1new)
+                  res[0] = res[1] * ratio
+                } else {
+                  if ((res0new * res1new <= 2073600) && (res0new * res1new > 912600) && (res1new % 4 == Math.min((4 - Math.max(res1new % 4)),Math.min(res1new % 4)))) {
+                    res[1] = res1new - (res1new % 4)
+                    res[0] = res0new
+                  }
                 }
               }
               if (this.interlace == 1) {
@@ -171,24 +166,16 @@ export default {
             res = this.res;
             newproduct = 0;
             ratio = res[0] / res[1];
-            if (res[0] % 4 != 0) {
-              res[0] = res[0] + 2;
-              while (newproduct > 921600) {
-                res[0] = res[0] + 4;
-                res[1] = Math.round(res[0] / ratio);
-                newproduct = res[0] * res[1];
-              }
-              if (res[1] % 4 != 0) {
-                res[1] = res[1] + (4 - (res[1] % 4));
-              }
-            } else {
-              while (newproduct > 921600) {
-                res[0] = res[0] + 4;
-                res[1] = Math.round(res[0] / ratio);
-                newproduct = res[0] * res[1];
-              }
-              if (res[1] % 4 != 0) {
-                res[1] = res[1] + (4 - (res[1] % 4));
+            for (var res0new = res[0]; res0new < 14400; res0new = res0new + 4) {
+              res1new = res0new / ratio;
+              if ((res0new * res1new <= 2073600) && (res1new % 4 == 0) && (res0new * res1new > 912600)) {
+                res[1] = Math.min(res1new)
+                res[0] = res[1] * ratio
+              } else {
+                if ((res0new * res1new <= 2073600) && (res0new * res1new > 912600) && (res1new % 4 == Math.min((4 - Math.max(res1new % 4)),Math.min(res1new % 4)))) {
+                  res[1] = res1new + (1 - (res1new % 4))
+                  res[0] = res0new
+                }
               }
             }
             this.setcard("请输入宽度" + res[0] + "和高度" + res[1] + "，并按照码率B来处理", 3, 10000);
@@ -198,24 +185,16 @@ export default {
               res = this.res;
               newproduct = 0;
               ratio = res[0] / res[1];
-              if (res[0] % 4 != 0) {
-                res[0] = res[0] + 2;
-                while (newproduct > 409920) {
-                  res[0] = res[0] + 4;
-                  res[1] = Math.round(res[0] / ratio);
-                  newproduct = res[0] * res[1];
-                }
-                if (res[1] % 4 != 0) {
-                  res[1] = res[1] + (4 - (res[1] % 4));
-                }
-              } else {
-                while (newproduct > 409920) {
-                  res[0] = res[0] + 4;
-                  res[1] = Math.round(res[0] / ratio);
-                  newproduct = res[0] * res[1];
-                }
-                if (res[1] % 4 != 0) {
-                  res[1] = res[1] + (4 - (res[1] % 4));
+              for (var res0new = res[0]; res0new < 6337; res0new = res0new + 4) {
+                res1new = res0new / ratio;
+                if ((res0new * res1new <= 921600) && (res1new % 4 == 0) && (res0new * res1new > 409920)) {
+                  res[1] = Math.min(res1new)
+                  res[0] = res[1] * ratio
+                } else {
+                  if ((res0new * res1new <= 921600) && (res0new * res1new > 409920) && (res1new % 4 == Math.min((4 - Math.max(res1new % 4)),Math.min(res1new % 4)))) {
+                    res[1] = res1new + (1 - (res1new % 4))
+                    res[0] = res0new
+                  }
                 }
               }
               if (this.interlace == 1) {
