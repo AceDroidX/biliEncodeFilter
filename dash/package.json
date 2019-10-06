@@ -1,5 +1,5 @@
 {
-  "name": "dash",
+  "name": "biliencode",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -34,9 +34,7 @@
       "plugin:vue/essential",
       "eslint:recommended"
     ],
-    "rules": {
-      "no-console": "off"
-    },
+    "rules": {},
     "parserOptions": {
       "parser": "babel-eslint"
     }
